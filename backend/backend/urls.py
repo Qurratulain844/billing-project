@@ -24,11 +24,15 @@ from rest_framework_simplejwt.views import (
 
 from django.conf import settings
 from django.conf.urls.static import static
+from django.http import HttpResponse
 
+def home(request):
+    return HttpResponse("Backend is running 🚀")
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', home),
 
     # JWT Login
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),

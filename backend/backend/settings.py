@@ -114,20 +114,18 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 #     }
 # }
 
+import dj_database_url
+DATABASES = {
+    'default': dj_database_url.config(default='sqlite:///db.sqlite3')
+}
+
 
 # import dj_database_url
+# import os
 
 # DATABASES = {
-#     'default': dj_database_url.config(default='')
+#     'default': dj_database_url.config(default='postgresql://billing_db_6xm0_user:Kix3iCjoj0vNH7Wxe17Uj8SJskabtIED@dpg-d6vug6fkijhs73d30h3g-a/billing_db_6xm0')
 # }
-
-
-import dj_database_url
-import os
-
-DATABASES = {
-    'default': dj_database_url.config(default='postgres://billing_db_6xm0_user:YOUR_PASSWORD@dpg-d6vug6fkijhs73d30h3g-a.render.com:5432/billing_db_6xm0')
-}
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
