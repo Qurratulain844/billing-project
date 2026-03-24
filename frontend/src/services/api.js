@@ -3,11 +3,10 @@ import axios from "axios";
 // Use Render backend URL from .env
 // const API_BASE_URL = process.env.REACT_APP_API_URL;
 
-// Vite style
-const API_BASE_URL = import.meta.env.VITE_API_URL;
+const API_BASE_URL = import.meta.env.VITE_API_URL; 
 
 const api = axios.create({
-  baseURL: "http://127.0.0.1:8000/api/",
+  baseURL: "https://billing-project-1-edh5.onrender.com/api/",
 });
 
 // ✅ Attach Access Token Automatically
