@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-$ytrj^6=_!$#+%*)g3*_bxxbvcnym0ke(@jiyzv$s+by&uz)oa
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 AUTH_USER_MODEL = 'accounts.User'
 
 
@@ -70,6 +70,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -102,17 +103,31 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'plywood_billing',
-        'USER': 'postgres',
-        'PASSWORD': 'qurrat',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'plywood_billing',
+#         'USER': 'postgres',
+#         'PASSWORD': 'qurrat',
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     }
+# }
 
+
+# import dj_database_url
+
+# DATABASES = {
+#     'default': dj_database_url.config(default='')
+# }
+
+
+import dj_database_url
+import os
+
+DATABASES = {
+    'default': dj_database_url.config(default='postgres://billing_db_6xm0_user:YOUR_PASSWORD@dpg-d6vug6fkijhs73d30h3g-a.render.com:5432/billing_db_6xm0')
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
