@@ -1,5 +1,11 @@
 import axios from "axios";
 
+// Use Render backend URL from .env
+// const API_BASE_URL = process.env.REACT_APP_API_URL;
+
+// Vite style
+const API_BASE_URL = import.meta.env.VITE_API_URL;
+
 const api = axios.create({
   baseURL: "http://127.0.0.1:8000/api/",
 });
@@ -31,4 +37,20 @@ api.interceptors.response.use(
   }
 );
 
+
+
+// export const fetchInvoices = async () => {
+//   const res = await fetch(`${API_BASE_URL}/invoices/`, {
+//     method: 'GET',
+//     headers: { 'Content-Type': 'application/json' },
+//   });
+//   return res.json();
+// };
+
 export default api;
+
+// Example API function
+export const fetchInvoices = async () => {
+  const res = await api.get("/invoices/"); // automatically calls Render URL + /invoices/
+  return res.data;
+};

@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import API from "../services/api";
 
@@ -23,6 +22,9 @@ export default function Settings() {
     fetchCompany();
   }, []);
 
+  // -------------------
+  // FETCH COMPANY (FIXED)
+  // -------------------
   const fetchCompany = async () => {
     try {
 
@@ -30,11 +32,19 @@ export default function Settings() {
 
       if (res.data) {
         setCompany(res.data);
-        setLogoPreview(
-          res.data.logo?.startsWith("http")
+
+        if (res.data.logo) {
+
+          const baseURL =
+            import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000";
+
+          const fullLogoUrl = res.data.logo.startsWith("http")
             ? res.data.logo
-            : `http://127.0.0.1:8000${res.data.logo}`
-        );
+            : `${baseURL}${res.data.logo}`;
+
+          // ✅ cache buster to always load new logo
+          setLogoPreview(`${fullLogoUrl}?t=${new Date().getTime()}`);
+        }
       }
 
     } catch (error) {
@@ -45,7 +55,6 @@ export default function Settings() {
   // -------------------
   // ACCOUNT UPDATE
   // -------------------
-
   const updateAccount = async () => {
 
     try {
@@ -71,7 +80,6 @@ export default function Settings() {
   // -------------------
   // COMPANY UPDATE
   // -------------------
-
   const updateCompany = async () => {
 
     try {
@@ -84,6 +92,7 @@ export default function Settings() {
       formData.append("phone", company.phone || "");
       formData.append("email", company.email || "");
 
+      // ✅ only append if new file selected
       if (company.logo && company.logo instanceof File) {
         formData.append("logo", company.logo);
       }
@@ -95,6 +104,9 @@ export default function Settings() {
       });
 
       alert("Company settings saved");
+
+      // ✅ reload latest logo
+      fetchCompany();
 
     } catch (error) {
 
@@ -114,7 +126,6 @@ export default function Settings() {
       </h1>
 
       {/* ACCOUNT SETTINGS */}
-
       <div className="bg-white p-6 rounded shadow space-y-4">
 
         <h2 className="text-lg font-semibold">
@@ -155,26 +166,32 @@ export default function Settings() {
       </div>
 
       {/* COMPANY SETTINGS */}
-
       <div className="bg-white p-6 rounded shadow space-y-4">
 
         <h2 className="text-lg font-semibold">
           Company Settings
         </h2>
 
+        {/* ✅ LOGO PREVIEW */}
         {logoPreview && (
           <img
             src={logoPreview}
             alt="logo"
-            className="h-20 mb-3"
+            className="h-20 object-contain mb-3"
           />
         )}
 
+        {/* ✅ FILE INPUT FIXED */}
         <input
           type="file"
+          accept="image/*"
           onChange={(e) => {
-            setCompany({ ...company, logo: e.target.files[0] });
-            setLogoPreview(URL.createObjectURL(e.target.files[0]));
+            const file = e.target.files[0];
+
+            if (file) {
+              setCompany({ ...company, logo: file });
+              setLogoPreview(URL.createObjectURL(file));
+            }
           }}
         />
 
@@ -238,8 +255,7 @@ export default function Settings() {
       </div>
 
     </div>
+
   );
 
 }
-
-

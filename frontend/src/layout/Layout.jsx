@@ -13,6 +13,7 @@ import {
   HiLogout,
 } from "react-icons/hi";
 import logo from "../assets/logo.png";
+import smallLogo from "../assets/wonderw.svg"; // new small logo
 
 export default function Layout() {
   const navigate = useNavigate();
@@ -33,17 +34,14 @@ export default function Layout() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center p-4">
-
-      {/* ===== MAIN WRAPPER (Floating Rounded Layout) ===== */}
       <div className="w-full h-[95vh] bg-white rounded-3xl shadow-2xl flex overflow-hidden">
 
-        {/* ===== SIDEBAR ===== */}
+        {/* SIDEBAR */}
         <aside
           className={`bg-[#0e2f2f] text-white transition-all duration-500 ease-in-out relative ${
             collapsed ? "w-20" : "w-72"
           } hidden lg:flex flex-col`}
         >
-          {/* Collapse Button */}
           <button
             onClick={() => setCollapsed(!collapsed)}
             className="absolute -right-3 top-10 bg-teal-600 p-1 rounded-full shadow-lg hover:scale-110 transition"
@@ -52,48 +50,43 @@ export default function Layout() {
           </button>
 
           {/* Logo */}
-          <div className="flex items-center gap-3 p-6">
-            <img src={logo} alt="Logo" className="h-30 w-auto" />
-            {/* {!collapsed && (
-              <span className="text-lg font-semibold tracking-wide">
-                BillingApp
-              </span>
-            )} */}
+          <div className="flex items-center gap-3 p-6 transition-all duration-300">
+            <img
+              src={collapsed ? smallLogo : logo}
+              alt="Logo"
+              className={`transition-all duration-100 ${
+                collapsed ? "h-25 w-25" : "h-20 w-auto"
+              }`}
+            />
+            
           </div>
 
           {/* Navigation */}
           <nav className="flex flex-col gap-2 px-3 mt-4 text-sm flex-1">
-
             <NavLink to="/" className={navClass}>
               <HiHome size={20} />
               {!collapsed && "Home"}
             </NavLink>
-
             <NavLink to="/customers" className={navClass}>
               <HiUsers size={20} />
               {!collapsed && "Customers"}
             </NavLink>
-
             <NavLink to="/products" className={navClass}>
               <HiCube size={20} />
               {!collapsed && "Products"}
             </NavLink>
-
             <NavLink to="/create-invoice" className={navClass}>
               <HiDocumentText size={20} />
               {!collapsed && "Create Invoice"}
             </NavLink>
-
             <NavLink to="/invoices" className={navClass}>
               <HiDocumentText size={20} />
               {!collapsed && "Invoices"}
             </NavLink>
-
             <NavLink to="/settings" className={navClass}>
               <HiCog size={20} />
               {!collapsed && "Settings"}
             </NavLink>
-
           </nav>
 
           {/* Logout */}
@@ -108,11 +101,9 @@ export default function Layout() {
           </div>
         </aside>
 
-        {/* ===== MOBILE SIDEBAR ===== */}
+        {/* MOBILE SIDEBAR */}
         <div
-          className={`fixed inset-0 z-40 lg:hidden ${
-            mobileOpen ? "block" : "hidden"
-          }`}
+          className={`fixed inset-0 z-40 lg:hidden ${mobileOpen ? "block" : "hidden"}`}
         >
           <div
             className="absolute inset-0 bg-black/40"
@@ -130,10 +121,8 @@ export default function Layout() {
           </aside>
         </div>
 
-        {/* ===== CONTENT ===== */}
+        {/* CONTENT */}
         <div className="flex-1 flex flex-col bg-gray-50">
-
-          {/* Topbar */}
           <header className="flex items-center justify-between bg-white px-6 py-4 shadow-sm lg:hidden">
             <button onClick={() => setMobileOpen(true)}>
               <HiMenu size={24} />
@@ -146,9 +135,7 @@ export default function Layout() {
               <Outlet />
             </div>
           </main>
-
         </div>
-
       </div>
     </div>
   );

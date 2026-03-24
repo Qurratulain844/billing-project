@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import API from "../services/api";
+import Logo from "../assets/wonderb.svg?version=2"; // rename or add version
 
 export default function InvoicePrint() {
 
@@ -87,7 +88,7 @@ export default function InvoicePrint() {
 
         <button
           onClick={handlePrint}
-          className="bg-teal-600 text-white px-4 py-2 rounded"
+          className="bg-teal-600  hover:bg-red-600 text-white px-4 py-2 rounded"
         >
           Print Invoice
         </button>
@@ -101,11 +102,7 @@ export default function InvoicePrint() {
 
           {company?.logo && (
             <img
-              src={
-                company.logo.startsWith("http")
-                  ? company.logo
-                  : `http://127.0.0.1:8000${company.logo}`
-              }
+              src={`${Logo}?v=${new Date().getTime()}`} // append timestamp
               alt="logo"
               className="h-20"
             />
@@ -153,7 +150,7 @@ export default function InvoicePrint() {
       </div>
 
       {/* ITEMS */}
-      <table className="w-full border mb-6">
+      <table className="w-full mb-6 border border-gray-300 rounded-lg overflow-hidden">
 
         <thead className="bg-teal-600 text-white">
           <tr>
@@ -165,59 +162,108 @@ export default function InvoicePrint() {
         </thead>
 
         <tbody>
-
           {invoice.items?.map((item) => (
-
             <tr key={item.id} className="border-t">
-
               <td className="p-2">
                 {getVariantName(item.product_variant)}
               </td>
-
               <td className="p-2 text-center">
                 {item.quantity}
               </td>
-
               <td className="p-2 text-right">
                 ₹ {parseFloat(item.price).toFixed(2)}
               </td>
-
               <td className="p-2 text-right">
                 ₹ {parseFloat(item.total).toFixed(2)}
               </td>
-
             </tr>
-
           ))}
-
         </tbody>
 
       </table>
 
-      {/* TOTALS */}
-      <div className="flex justify-end">
+      {/* NOTE + TOTALS */}
+      <div className="flex justify-between mt-8">
 
-        <div className="w-72 space-y-2">
+        {/* LEFT: NOTE */}
+        <div className="w-1/2 pr-6">
+          <div className="border border-gray-300 rounded-lg p-4 h-full">
 
-          <div className="flex justify-between">
-            <span>Subtotal</span>
+            <p className="text-xs font-semibold text-gray-500 mb-2 uppercase tracking-wide">
+              Note :
+            </p>
+
+            <p className="text-sm text-gray-700 leading-relaxed">
+              {invoice.note || "Thank you for your business!"}
+            </p>
+
+          </div>
+        </div>
+        {/* RIGHT: TOTALS */}
+        <div className="w-72 text-sm">
+
+          <div className="flex justify-between py-1">
+            <span className="text-gray-600">Subtotal</span>
             <span>₹ {parseFloat(invoice.subtotal).toFixed(2)}</span>
           </div>
 
-          <div className="flex justify-between">
-            <span>GST ({invoice.gst_percent}%)</span>
+          <div className="flex justify-between py-1">
+            <span className="text-gray-600">GST ({invoice.gst_percent}%)</span>
             <span>₹ {parseFloat(invoice.gst_amount).toFixed(2)}</span>
           </div>
 
-          <div className="flex justify-between font-semibold border-t pt-2">
+          <div className="flex justify-between py-1 font-medium">
             <span>Total</span>
             <span>₹ {parseFloat(invoice.total_amount).toFixed(2)}</span>
+          </div>
+
+          <div className="flex justify-between py-1 text-gray-700">
+            <span>Paid</span>
+            <span>₹ {parseFloat(invoice.paid_amount || 0).toFixed(2)}</span>
+          </div>
+
+          {/* Highlight Balance */}
+          <div className="flex justify-between mt-2 pt-2 border-t font-semibold text-base">
+            <span>Balance</span>
+            <span>
+              ₹ {(parseFloat(invoice.total_amount) - parseFloat(invoice.paid_amount || 0)).toFixed(2)}
+            </span>
           </div>
 
         </div>
 
       </div>
 
+      {/* BUSINESS INFO */}
+      <div className="mt-10 pt-6 border-t text-sm text-gray-700">
+
+        <div className="grid grid-cols-2 gap-6">
+
+          {/* LEFT: COMPANY DETAILS */}
+          <div>
+            <p className="font-semibold mb-1">Company Details</p>
+
+            <p>{company?.name}</p>
+            <p>{company?.address}</p>
+            <p>{company?.city}</p>
+            <p>Phone: {company?.phone}</p>
+            <p>Email: {company?.email}</p>
+          </div>
+
+          {/* RIGHT: BANK / OTHER INFO */}
+          <div>
+            <p className="font-semibold mb-1">Other Information</p>
+
+            <p>Bank: Your Bank Name</p>
+            <p>A/C No: XXXX XXXX XXXX</p>
+            <p>IFSC: XXXX0001234</p>
+            <p>GSTIN: 27XXXXXXXXXX</p>
+
+          </div>
+
+        </div>
+
+      </div>
     </div>
   );
 }

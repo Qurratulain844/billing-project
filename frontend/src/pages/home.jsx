@@ -115,7 +115,7 @@ export default function Home() {
           </h2>
 
           <p className="mt-6 text-gray-300 text-lg">
-            Strong, stylish, and long-lasting plywood for furniture and interiors.
+            
           </p>
 
           <div className="mt-8 flex gap-4">
@@ -150,7 +150,6 @@ export default function Home() {
           className="rounded-3xl shadow-2xl border border-white/10"
         />
       </section>
-
       {/* ===== GALLERY ===== */}
       <section id="gallery" className="max-w-7xl mx-auto px-8 py-20">
         <h3 className="text-4xl font-bold text-center mb-16">

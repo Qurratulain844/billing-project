@@ -323,15 +323,6 @@ Save Invoice
 <span>₹ {subtotal.toFixed(2)}</span>
 </div>
 
-<div className="flex justify-between">
-<span>Discount</span>
-<input
-type="number"
-value={discount}
-onChange={(e)=>setDiscount(parseFloat(e.target.value)||0)}
-className="border p-1 w-20 text-right"
-/>
-</div>
 
 <div className="flex justify-between">
 <span>CGST</span>
